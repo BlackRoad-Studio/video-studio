@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Studio - Creator Video Editor | BlackRoad</title>
+    <style>
+        :root {
+            --hot-pink: #FF1D6C;
+            --amber: #F5A623;
+            --violet: #9C27B0;
+            --electric-blue: #2979FF;
+            --black: #000000;
+            --white: #FFFFFF;
+            --phi: 1.618;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated grid background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 29, 108, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 29, 108, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Glowing orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite;
+            z-index: 1;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--hot-pink);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: var(--violet);
+            top: 50%;
+            right: 10%;
+            animation-delay: 7s;
+        }
+
+        .orb3 {
+            width: 350px;
+            height: 350px;
+            background: var(--electric-blue);
+            bottom: 10%;
+            left: 30%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+        }
+
+        /* Header */
+        header {
+            padding: calc(8px * var(--phi) * var(--phi)) 0; /* 21px */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--amber), var(--hot-pink), var(--violet), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--hot-pink);
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)) 0; /* 89px */
+        }
+
+        h1 {
+            font-size: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)); /* 89px */
+            font-weight: 900;
+            margin-bottom: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            background: linear-gradient(135deg, var(--violet), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+        }
+
+        .problem {
+            font-size: calc(8px * var(--phi)); /* 13px */
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: calc(8px * var(--phi)); /* 13px */
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: calc(8px * var(--phi)) calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 13px 34px */
+            font-size: calc(8px * var(--phi)); /* 13px */
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--hot-pink), var(--violet));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 29, 108, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--hot-pink);
+        }
+
+        .btn-secondary:hover {
+            background: var(--hot-pink);
+        }
+
+        /* Features section */
+        .features {
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)) 0; /* 89px */
+        }
+
+        h2 {
+            font-size: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 55px */
+            font-weight: 800;
+            margin-bottom: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 55px */
+            text-align: center;
+            background: linear-gradient(135deg, var(--amber), var(--hot-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            margin-bottom: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 29, 108, 0.2);
+            border-radius: 13px;
+            padding: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--hot-pink);
+            box-shadow: 0 10px 30px rgba(255, 29, 108, 0.2);
+        }
+
+        .feature-icon {
+            font-size: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+            margin-bottom: calc(8px * var(--phi)); /* 13px */
+        }
+
+        h3 {
+            font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--hot-pink);
+        }
+
+        /* Pricing section */
+        .pricing {
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)) 0; /* 89px */
+            text-align: center;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 29, 108, 0.3);
+            border-radius: 21px;
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--hot-pink);
+            transform: scale(1.02);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--hot-pink);
+            border-width: 3px;
+        }
+
+        .plan-name {
+            font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            font-weight: 700;
+            margin-bottom: calc(8px * var(--phi)); /* 13px */
+        }
+
+        .price {
+            font-size: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)); /* 89px */
+            font-weight: 900;
+            color: var(--hot-pink);
+            margin: calc(8px * var(--phi)) 0; /* 13px */
+        }
+
+        .price-note {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: calc(8px * var(--phi) * var(--phi)); /* 21px */
+        }
+
+        .features-list {
+            text-align: left;
+            margin: calc(8px * var(--phi) * var(--phi)) 0; /* 21px */
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Comparison section */
+        .comparison {
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi) * var(--phi)) 0; /* 89px */
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            margin-top: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 13px;
+            padding: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            text-align: center;
+        }
+
+        .vs {
+            color: var(--amber);
+            font-weight: 800;
+            margin: calc(8px * var(--phi)) 0; /* 13px */
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .new-price {
+            font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            font-weight: 800;
+            color: var(--hot-pink);
+        }
+
+        .savings {
+            color: #4CAF50;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+            color: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: calc(8px * var(--phi) * var(--phi) * var(--phi)); /* 34px */
+            }
+
+            h2 {
+                font-size: calc(8px * var(--phi) * var(--phi)); /* 21px */
+            }
+
+            .features-grid, .comparison-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="grid-bg"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">BlackRoad</div>
+            <nav>
+                <a href="https://github.com/BlackRoad-Studio">GitHub</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+            </nav>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <h1>Video Studio</h1>
+            <p class="tagline">Video editing for creators, not engineers</p>
+            <p class="problem">
+                Stop wrestling with confusing interfaces and expensive subscriptions. Video Studio gives you
+                professional editing tools with AI-powered features at a price that makes sense.
+                Create, edit, export. Simple as that.
+            </p>
+            <div class="cta-buttons">
+                <a href="#pricing" class="btn btn-primary">Start Free Trial</a>
+                <a href="https://github.com/BlackRoad-Studio/video-studio" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="features">
+            <h2>Everything You Need to Create</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Timeline Editing</h3>
+                    <p>Drag-and-drop timeline with unlimited tracks. Trim, split, move clips with precision. No render waiting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>AI Auto-Captions</h3>
+                    <p>Generate accurate captions in 50+ languages. Auto-sync, customize style, export SRT. Accessibility built in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Transitions & Effects</h3>
+                    <p>100+ professional transitions, color grading presets, filters. Keyframe animation for custom effects.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Title & Graphics</h3>
+                    <p>Built-in title templates, lower thirds, motion graphics. Customize fonts, colors, animations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Audio Tools</h3>
+                    <p>Multi-track audio mixing, noise reduction, EQ, compression. Royalty-free music library included.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📤</div>
+                    <h3>Export Anywhere</h3>
+                    <p>Export to MP4, MOV, WebM. Presets for YouTube, Instagram, TikTok. Direct upload to platforms.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="pricing">
+            <h2>Simple Pricing, No Tricks</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Free</div>
+                    <div class="price">$0<span style="font-size: 21px;">/month</span></div>
+                    <p class="price-note">Perfect for trying it out</p>
+                    <ul class="features-list">
+                        <li>720p export resolution</li>
+                        <li>Basic transitions & effects</li>
+                        <li>AI captions (10 min/month)</li>
+                        <li>5 GB cloud storage</li>
+                        <li>Video Studio watermark</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 21px;">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="plan-name">Creator</div>
+                    <div class="price">$19<span style="font-size: 21px;">/month</span></div>
+                    <p class="price-note">14-day free trial</p>
+                    <ul class="features-list">
+                        <li>4K export resolution</li>
+                        <li>All transitions & effects</li>
+                        <li>Unlimited AI captions</li>
+                        <li>100 GB cloud storage</li>
+                        <li>No watermark</li>
+                        <li>Royalty-free music library</li>
+                        <li>Direct platform upload</li>
+                        <li>Priority rendering</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="margin-top: 21px;">Start Free Trial</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-name">Team</div>
+                    <div class="price">$79<span style="font-size: 21px;">/month</span></div>
+                    <p class="price-note">Up to 5 editors</p>
+                    <ul class="features-list">
+                        <li>Everything in Creator</li>
+                        <li>5 editor accounts</li>
+                        <li>Shared cloud library (500 GB)</li>
+                        <li>Collaboration tools</li>
+                        <li>Team brand kit</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 21px;">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison -->
+        <section class="comparison">
+            <h2>Video Studio vs. The Competition</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3>Adobe Premiere Pro</h3>
+                    <p class="old-price">$22.99/month</p>
+                    <p class="old-price">Steep learning curve</p>
+                    <p class="old-price">No AI captions included</p>
+                    <div class="vs">VS</div>
+                    <h3 style="color: var(--hot-pink);">Video Studio</h3>
+                    <p class="new-price">$19/month</p>
+                    <p class="new-price">Easy to learn</p>
+                    <p class="new-price">AI captions included</p>
+                    <div class="savings">Save $48/year</div>
+                </div>
+                <div class="comparison-card">
+                    <h3>Final Cut Pro</h3>
+                    <p class="old-price">$299.99 one-time</p>
+                    <p class="old-price">Mac only</p>
+                    <p class="old-price">Complex interface</p>
+                    <div class="vs">VS</div>
+                    <h3 style="color: var(--hot-pink);">Video Studio</h3>
+                    <p class="new-price">$19/month</p>
+                    <p class="new-price">Cross-platform</p>
+                    <p class="new-price">Creator-friendly</p>
+                    <div class="savings">No huge upfront cost</div>
+                </div>
+                <div class="comparison-card">
+                    <h3>DaVinci Resolve</h3>
+                    <p class="old-price">Free (limited)</p>
+                    <p class="old-price">Pro: $295</p>
+                    <p class="old-price">Confusing for beginners</p>
+                    <div class="vs">VS</div>
+                    <h3 style="color: var(--hot-pink);">Video Studio</h3>
+                    <p class="new-price">$19/month</p>
+                    <p class="new-price">All features unlocked</p>
+                    <p class="new-price">Built for creators</p>
+                    <div class="savings">Simple & affordable</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Who it's for -->
+        <section class="features">
+            <h2>Built For Real Creators</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Content Creators</h3>
+                    <p>YouTube, TikTok, Instagram. Fast editing with direct upload. AI captions for accessibility.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Educators</h3>
+                    <p>Create course videos, tutorials, lectures. Screen recording, annotations, captions included.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3>Small Businesses</h3>
+                    <p>Marketing videos, product demos, testimonials. Professional results without hiring an agency.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="hero">
+            <h2>Start creating better videos today</h2>
+            <p class="tagline">14-day free trial. No credit card required.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Start Free Trial</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 BlackRoad OS, Inc. All rights reserved.</p>
+            <p>Built with Claude Code</p>
+        </footer>
+    </div>
+</body>
+</html>
