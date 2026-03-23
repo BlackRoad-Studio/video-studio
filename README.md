@@ -1,5 +1,13 @@
 # video-studio
 
+> Video Studio — video editor with timeline editing, AI auto-captions, and effects. Proprietary BlackRoad OS, Inc.
+
+Part of the [BlackRoad OS](https://blackroad.io) ecosystem — [BlackRoad-Studio](https://github.com/BlackRoad-Studio)
+
+---
+
+# video-studio
+
 Video Studio — video editor with timeline editing, AI auto-captions, and effects. Proprietary BlackRoad OS, Inc.
 
 **BlackRoad-Studio** — Creative — video, canvas, design
